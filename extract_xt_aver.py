@@ -7,17 +7,18 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import constant as const
 from numpy import ma
 from matplotlib import colors, ticker, cm
 from matplotlib.mlab import bivariate_normal
 from scipy.interpolate import spline
-savedir="./txtbak/"+ const.data_name
-#savedir="./txt/density1e-2/"
+import constant as const
+
+savedir=const.txtdir   #"./txt/a0_1_2e-2/"
 savename="xt.txt"
+fftdir =const.figdir      #"./fig/a0_1_2e-2/"  
 ###
-dirsdf  =  '../Data/density1e-2/'
-dirsize =  5
+dirsdf  = const.sdfdir   # '../Data/a0_1_2e-2/'
+dirsize =  const.filenumber    #4
 if __name__ == "__main__":
   ######## Constant defined here ########
   pi        =     3.1415926535897932384626
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 ####lamada
 
 
-  wavelength=     10.6e-6
+  wavelength=     const.lamada     #10.6e-6
 
 ####
 
@@ -50,57 +51,41 @@ if __name__ == "__main__":
           'weight' : 'normal',  
           'size'   : 28,  
           }  
-  
-  
-  
-  ######### Parameter you should set ###########
-
-#####
-  micron  =  1e-6
-####
-
-
-  lamada  =  wavelength# 0.8 * micron
-
-
-####window size
-  c       =  3e8
-  x_max   =  80 * lamada    #60 * lamada
-  x_min   =  0 * micron
-  window_start_time =  (x_max - x_min) / c 
-####dt
-
-
-  dt_snapshot= 3e-15  #fs
-
-
-####electron locate
-  dt      =  dt_snapshot*1e15  #fs
-  start_move_number =  int(window_start_time / dt_snapshot)
-  y       =  1000      #1250
-  x_end   =  x_max - x_min
-  gridnumber = 2400
-  delta_x =  x_end/gridnumber
-
-###file_number
-  start   =  1  # start time
-  stop    =  17667   #22967 #21667  # end time
-  step    =  1  # the interval or step
-  t_end   =  stop * dt_snapshot
-  t_n     =  int(t_end/1e-15)
-  if t_end-window_start_time<0:
-      xgrid   =  int(gridnumber)
-  else:
-      xgrid   =  int(gridnumber + c*(t_end-window_start_time)/delta_x)
-   
   if (os.path.isdir(savedir) == False):
-    os.mkdir(savedir)
+     os.mkdir(savedir)
   if (os.path.isdir(fftdir) == False):
-    os.mkdir(fftdir)
-  ######### Script code drawing figure ################
+     os.mkdir(fftdir)    
+######### Script code drawing figure ################
+######constant
+###
+  c       =  3e8
+  micron  =  1e-6
+  lamada  =  const.lamada #10.6 * micron
+  gridnumber = const.Nx     #2400
+  start   =  1
+  stop    =  const.stop       #5889 #17000
+  step    =  1
+  dt_snapshot= const.dt_snapshot     #9e-15
+  dt      =  dt_snapshot*1e15      #fs
+  x_max   =  const.x_max      #80 * lamada   #60 * lamada    #micron
+  x_min   =  0 * micron
+  x_end   =  x_max - x_min
+  y       =  const.Ny/2 
+  window_start_time =  (x_max - x_min) / c
+  #start_move_number = window_start_time * 1e15      #fs
+  start_move_number =  int(window_start_time / dt_snapshot)
+  delta_x =  x_end/gridnumber
+  t_end   =  stop * dt_snapshot
+  x_interval=const.x_interval          #10
+  t_total=1e15*x_end/c         #fs
+  t_size=t_total/(dt_snapshot*1e15)+1           #t_grid_number
+  if t_end-window_start_time<0:
+        xgrid   =  int(gridnumber)
+  else: 
+        xgrid   =  int(gridnumber + c*(t_end-window_start_time)/delta_x)
  
 ####################
-  x_interval=1
+  x_interval=const.x_interval      #10
   t_total=1e15*x_end/c         #fs
   t_size=int(t_total/dt)+1+1   
 
@@ -112,6 +97,7 @@ if __name__ == "__main__":
         data = sdf.read(dirsdf+str(n).zfill(dirsize)+".sdf",dict=True)
         header=data['Header']
         time=header['time']
+        E_y0=data['Electric Field/Ey_averaged'].data[...,y]
         if  n  <  start_move_number:
                      
            for x in range(1,int(gridnumber/x_interval)+1):
@@ -119,7 +105,7 @@ if __name__ == "__main__":
               d_n=int((1e15*delta_x*a/c)/dt)
               if n-d_n > 0 and n-d_n < t_size :
                     #[fs]
-                   xt[x][n-d_n]=data['Magnetic Field/Bz'].data[a-1][y]/bxunit            
+                   xt[x][n-d_n]=E_y0[a-1] #/bxunit            
         else:
            for x in range(1,int(xgrid/x_interval)+1):
                 
@@ -128,7 +114,7 @@ if __name__ == "__main__":
 	       if a-c*(time-window_start_time)/delta_x >= 0 and a-c*(time-window_start_time)/delta_x < gridnumber-1:
 		    #[fs]
                    d_n=int((1e15*delta_x*a/c)/dt)
-                   xt[x][n-d_n]=data['Magnetic Field/Bz'].data[int(round(a-c*(time-window_start_time)/delta_x))][y]/bxunit
+                   xt[x][n-d_n]=E_y0[int(round(a-c*(time-window_start_time)/delta_x))]  #/bxunit
                    #else:bz.append(0)
                    #print 'Reading finished%d' %len(t)
   

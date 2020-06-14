@@ -26,7 +26,7 @@ def draw(x):
 	sdfdir=const.sdfdir +str(x).zfill(const.filenumber)+".sdf"
 	data=sdf.read(sdfdir,dict=True)
 	#data=sdf.read(const.sdfdir+str(x).zfill(const.filenumber)+".sdf",dict=True)
-	Bz=data['Electric Field/Ey']
+	Bz=data['Electric Field/Ey_averaged']
 	global T
 	time=data['Header']['time']
 	if time-const.window_start_time<0:

@@ -41,14 +41,15 @@ fs=N0*1e3/T
 freqs=np.linspace(0,fs/2,int(N0/2)+1)
 ################freqs=np.linspace(0,500,101)
 #####time profile
-t=np.arange(0,t_size+1,1)
+t=np.arange(1,t_size,1)
 
 
 #####
 
 
 #####set x ,t        
-x=np.arange(int(xgrid/x_interval)+1)
+#x=np.arange(int(xgrid/x_interval)+1)
+x=np.linspace(0,xgrid*delta_x*1e6/x_interval,xgrid/x_interval+1)
 X,time=np.meshgrid(x,t)
 
 
@@ -56,7 +57,7 @@ X,time=np.meshgrid(x,t)
 Xt=xt.T
 #plot
 fig,ax=plt.subplots()
-im=ax.pcolormesh(Xt,cmap=plt.get_cmap('rainbow'))
+im=ax.pcolormesh(X,time,Xt,cmap=plt.get_cmap('rainbow'))
 fig.colorbar(im,ax=ax)
 #fig.savefig('Xf.png',dpi=200)
 #set ticker
@@ -68,10 +69,11 @@ def t_formatter(x, pos):
         return  "%d"%int(x*dt)
 x_major_locator=int(xgrid/x_interval/5)
 x_minor_locator=int(xgrid/x_interval/10)
-ax.xaxis.set_major_locator( MultipleLocator(x_major_locator) )
-ax.xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
-ax.xaxis.set_minor_locator( MultipleLocator(x_minor_locator) )
-ax.yaxis.set_major_formatter( FuncFormatter( t_formatter ) )
+#ax.xaxis.set_major_locator( MultipleLocator(x_major_locator) )
+#ax.xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
+#ax.xaxis.set_minor_locator( MultipleLocator(x_minor_locator) )
+ax.xaxis.set_minor_locator( MultipleLocator(100) )
+#ax.yaxis.set_major_formatter( FuncFormatter( t_formatter ) )
 ax.set_xlabel('um')
 ax.set_ylabel('fs')
 

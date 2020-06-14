@@ -2,9 +2,9 @@
 import os
 #constant
 nperseg = 256
-name    = 'a2_n2'
-data_name= "a2_n2/"
-filenumber=5
+name    = 'a2_n3'
+data_name= "a2_n3/"
+filenumber=4
 sdfdir  =  "../Data/"+data_name
 txtdir =  "txt/"+data_name
 figdir  =  "fig/"+data_name
@@ -21,7 +21,9 @@ lamada  =  10.6 * micron
 gridnumber = 2400
 Ny      =  2000
 Nx      =  gridnumber
-stop    =  10600
+start   =  1
+stop    =  7067
+step    =  1
 dt_snapshot= 3e-15
 dt      =  dt_snapshot*1e15      #fs
 x_max   =  80 * lamada#* micron   #60 * lamada #micron

@@ -39,6 +39,7 @@ N0 = t_size
 T=t_size*dt             #fs  #dt_snapshot*1e15  #t[x][t_size-1]-t[x][0]
 fs=N0*1e3/T
 freqs=np.linspace(0,fs/2,int(N0/2)+1)
+print len(freqs)
 ######
 for i in range(0,len(freqs)):
      if freqs[i] > 50:
@@ -56,7 +57,10 @@ t=np.arange(0,t_size+dt,dt)
 
 
 #####set x ,y         
-x=np.arange(int(xgrid/x_interval)+1)
+print xgrid*delta_x*1e6/x_interval,delta_x*1e6
+#x=np.arange(int(xgrid*delta_x*1e6/x_interval)+1,delta_x*1e6)
+x=np.linspace(0,xgrid*delta_x*1e6/x_interval,xgrid/x_interval+1)
+
 #a=float("inf")
 #freqs[0]=a
 #light=3e8*np.ones(freqs.shape)
@@ -72,7 +76,7 @@ Xf=xf.T
 #plot
 fig,ax=plt.subplots()
 ###
-Xf=Xf[0:index,...]
+#Xf=Xf[0:index,...]
 ###
 im=ax.pcolormesh(X,Freqs,Xf,cmap=plt.get_cmap('rainbow'))
 fig.colorbar(im,ax=ax)
@@ -86,17 +90,18 @@ def freqs_formatter(x, pos):
           
         return  "%d"%int(x)
 x_major_locator=int(xgrid/x_interval/5)
-x_minor_locator=int(xgrid/x_interval/10)
+x_minor_locator=int(xgrid/x_interval/50)
 
 #y_tick_pos  = np.linspace(0,40,1)
 #ax.set_yticks(y_tick_pos)
 ######
 #ax.set_yscale("symlog",basey=2)
 ax.set_ylim((0,50))
-ax.xaxis.set_major_locator( MultipleLocator(x_major_locator) )
-ax.xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
-ax.xaxis.set_minor_locator( MultipleLocator(x_minor_locator) )
-ax.yaxis.set_minor_locator( MultipleLocator(5) )
+#ax.xaxis.set_major_locator( MultipleLocator(x_major_locator) )
+#ax.xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
+#ax.xaxis.set_minor_locator( MultipleLocator(x_minor_locator) )
+ax.xaxis.set_minor_locator( MultipleLocator(200) )
+ax.yaxis.set_minor_locator( MultipleLocator(1) )
 #formatter0 = EngFormatter(unit='THz')
 #ax.yaxis.set_major_formatter(formatter0)
 ax.yaxis.set_major_formatter( FuncFormatter( freqs_formatter ) )
