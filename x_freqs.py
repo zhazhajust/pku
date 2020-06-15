@@ -10,7 +10,7 @@ plt.switch_backend('agg')
 #name="contrast/density_half"
 xf=np.loadtxt(const.txtdir+"xf.txt")
 ###
-locate  =  2200        #micron
+locate  =  4400        #micron
 
 savedir = const.figdir  +  "freqs"+str(locate)+".png"
 #constant

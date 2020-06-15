@@ -17,9 +17,9 @@ for n in range(start,stop+step):
         data = sdf.read(sdfdir,dict=True)
         header=data['Header']
         time=header['time']	
-        Ex=data["Electric Field/Ex_averaged"].data
+        Ex=data["Electric Field/Ex"].data
         Ex_y0=Ex[...,int(const.Ny/2)]
-        Ey=data["Electric Field/Ey_averaged"].data
+        Ey=data["Electric Field/Ey"].data
         Ey_y0=Ey[...,int(const.Ny/2)]
         ne=data['Derived/Number_Density/electron1'].data
         ne_y0=ne[...,int(const.Ny/2)]
