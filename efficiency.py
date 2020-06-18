@@ -29,8 +29,8 @@ def draw(x):
 	k_bz2=k_bz*1
 	k_n=[]
 	for n in range(0,const.Nx):
-		mi = 3e8/2e12 
-		ma = 3e8/5e12
+		mi = 3e8/0.1e12 
+		ma = 3e8/10e12
 		if 2 * 3.14 / ma  > n * delta_k and  n * delta_k > 2 * 3.14 / mi:
 			k_n.append(n)
 	print("n",k_n[0],k_n[-1])
@@ -54,7 +54,7 @@ def draw(x):
 	#plt.close('all')
 	return [E_x,E_Thz]
 print const.window_start_time
-middle = (4400e-6/3e8 + const.window_start_time)/const.dt_snapshot
+middle = (7500e-6/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 d_n = 800e-6/3e8/const.dt_snapshot
 d_n = int(d_n)
@@ -62,7 +62,8 @@ print 'middle',middle
 print "d_n",d_n
 final_energe = 0
 index_n = 0
-for i in range(middle - int(d_n/1.5),middle + d_n/8,1):
+for i in range(middle - int(d_n),middle + d_n/8,1):
+	print "i",i
 	eff=draw(i)
 	if eff[1] >= final_energe:
 		final_energe=eff[1]
@@ -74,6 +75,7 @@ b = const.x_max/3e8/const.dt_snapshot/2
 b = int(b)
 print 'b',b
 start=draw(b)
+print 'Thz,0.1-10'
 print 'index_n',index_n
 print 'index_x',3e8 * (index_n * const.dt_snapshot - const.window_start_time) * 1e6
 print 'efficiency',final_energe/start[0]

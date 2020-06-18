@@ -8,11 +8,12 @@ import imageio
 import function as func
 import scipy.fftpack as fftpack
 from matplotlib.ticker import MultipleLocator, FuncFormatter
+from multiprocessing.dummy import Pool as ThreadPool
 #import wigner
 plt.switch_backend('agg')
 ###
 ####
-interval=600
+interval=100
 image_list=[]
 png_savedir = "./gif/png/"
 
@@ -26,7 +27,7 @@ def draw(x):
 	sdfdir=const.sdfdir +str(x).zfill(const.filenumber)+".sdf"
 	data=sdf.read(sdfdir,dict=True)
 	#data=sdf.read(const.sdfdir+str(x).zfill(const.filenumber)+".sdf",dict=True)
-	Bz=data['Electric Field/Ey_averaged']
+	Bz=data['Electric Field/Ey']
 	global T
 	time=data['Header']['time']
 	if time-const.window_start_time<0:
@@ -94,10 +95,16 @@ def create_gif(image_list, gif_name, duration = 1):
     '''
     '''
     frames = []
-    for image_name in image_list:
-        frames.append(imageio.imread(image_name))
+    #for image_name in image_list:
+        #frames.append(imageio.imread(image_name))
 
+    #imageio.mimsave(gif_name, frames, 'GIF', duration=duration)
+ 
+    pool = ThreadPool()
+    frames = pool.map(imageio.imread,image_list)
     imageio.mimsave(gif_name, frames, 'GIF', duration=duration)
+    pool.close()
+    pool.join()
     return
 
 def main():

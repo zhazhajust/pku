@@ -53,6 +53,6 @@ def draw(x):
         fig.savefig(savefigdir,dpi=200)
 	plt.clf()
         plt.close('all')
-middle = (4400e-6/3e8 + const.window_start_time)/const.dt_snapshot
+middle = (868e-6/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 draw(middle)

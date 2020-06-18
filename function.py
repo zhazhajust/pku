@@ -7,9 +7,9 @@ pi=3.14
 def E_x_y_zxx(a):        
 	sdfdir=const.sdfdir +str(a).zfill(const.filenumber)+".sdf"
 	data=sdf.read(sdfdir,dict=True)
-	Ex=data["Electric Field/Ex_averaged"].data
+	Ex=data["Electric Field/Ex"].data
 	Ex_y0=Ex[...,int(const.Ny/2)]
-	Ey=data["Electric Field/Ey_averaged"].data
+	Ey=data["Electric Field/Ey"].data
 	Ey_y0=Ey[...,int(const.Ny/2)]
 	k,x,zxx=signal.stft(Ey_y0,fs=2*pi/const.delta_x,nperseg=const.nperseg)
 	zxx=abs(zxx)
