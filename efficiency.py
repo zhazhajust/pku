@@ -8,6 +8,9 @@ import function as func
 import scipy.fftpack as fftpack
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
+limit_min=1e12
+limit_max=4e12
+locate=7039e-6
 def draw(x):
         #p "draw",x
         savefigdir=const.figdir+str(x)+'k_bz.png'
@@ -29,8 +32,8 @@ def draw(x):
 	k_bz2=k_bz*1
 	k_n=[]
 	for n in range(0,const.Nx):
-		mi = 3e8/0.1e12 
-		ma = 3e8/10e12
+		mi = 3e8/limit_min 
+		ma = 3e8/limit_max
 		if 2 * 3.14 / ma  > n * delta_k and  n * delta_k > 2 * 3.14 / mi:
 			k_n.append(n)
 	print("n",k_n[0],k_n[-1])
@@ -54,7 +57,7 @@ def draw(x):
 	#plt.close('all')
 	return [E_x,E_Thz]
 print const.window_start_time
-middle = (7500e-6/3e8 + const.window_start_time)/const.dt_snapshot
+middle = (locate/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 d_n = 800e-6/3e8/const.dt_snapshot
 d_n = int(d_n)
@@ -75,7 +78,7 @@ b = const.x_max/3e8/const.dt_snapshot/2
 b = int(b)
 print 'b',b
 start=draw(b)
-print 'Thz,0.1-10'
+print 'Thz',limit_min,limit_max
 print 'index_n',index_n
 print 'index_x',3e8 * (index_n * const.dt_snapshot - const.window_start_time) * 1e6
 print 'efficiency',final_energe/start[0]

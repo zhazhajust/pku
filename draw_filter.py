@@ -29,8 +29,8 @@ def draw(x):
         k_bz2=k_bz*1
         k_n=[]
         for n in range(0,const.Nx):
-                mi = 3e8/2e12
-                ma = 3e8/5e12
+                mi = 3e8/0.1e12
+                ma = 3e8/10e12
                 if 2 * 3.14 / ma  > n * delta_k and  n * delta_k > 2 * 3.14 / mi:
                         k_n.append(n)
         print("n",k_n[0],k_n[-1])
@@ -53,6 +53,6 @@ def draw(x):
         fig.savefig(savefigdir,dpi=200)
 	plt.clf()
         plt.close('all')
-middle = (868e-6/3e8 + const.window_start_time)/const.dt_snapshot
+middle = (7594e-6/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 draw(middle)

@@ -2,8 +2,8 @@
 import os
 #constant
 nperseg = 256
-name    = 'a2_n1'
-data_name= "a2_n1/"
+name    = 'a2_n4.5'
+data_name= "a2_n4.5/"
 filenumber=4
 sdfdir  =  "../Data/"+data_name
 txtdir =  "txt/"+data_name

@@ -2,15 +2,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sdf
+import constant as const
 import matplotlib.pyplot as pl
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
-locate='a0_1_a0_2'
+locate='contrast862.0'
+x_locate=862
+xf=np.loadtxt(const.txtdir + 'xf.txt')
 
-xf=np.loadtxt('txt/density1e-2/xf.txt')
-xf2=np.loadtxt('txt/ac_a0_1/xf.txt')
+#xf=np.loadtxt('txt/density1e-2/xf.txt')
+#xf2=np.loadtxt('txt/ac_a0_1/xf.txt')
 #xf3=np.loadtxt('txt/density1.2/xf.txt')
-savedir = "fig/contrast/freqs"+str(locate)+".png"
+
+savedir = const.figdir +locate +".png"
 def xf_index(x_locate,x_lenth):
 ###
 	locate  =  x_locate        #micron
@@ -18,10 +22,10 @@ def xf_index(x_locate,x_lenth):
 	#constant
 	c       =  3e8
 	micron  =  1e-6
-	lamada  =  10.6 * micron
+	lamada  =  const.lamada #10.6 * micron
 	gridnumber = 2400
-	stop    =  17667
-	dt_snapshot= 3e-15
+	stop    =  const.stop #17667
+	dt_snapshot= const.dt_snapshot   #3e-15
 	dt      =  dt_snapshot*1e15      #fs
 
 	x_max   =  x_lenth * lamada
@@ -30,7 +34,7 @@ def xf_index(x_locate,x_lenth):
 	window_start_time =  (x_max - x_min) / c
 	delta_x =  x_end/gridnumber
 	t_end   =  stop * dt_snapshot
-	x_interval=10
+	x_interval=const.x_interval
 	t_total=1e15*x_end/c         #fs
 	t_size=t_total/(dt_snapshot*1e15)+1+1           #t_grid_number
 	######t_size=int(1e15*gridnumber*delta_x/c)+1
@@ -56,26 +60,28 @@ def xf_index(x_locate,x_lenth):
 #####set x ,y         
 
 ####transition Xf
-x=xf_index(6000,80)[0]
-freqs=xf_index(6000,80)[1]
+x=xf_index(x_locate,80)[0]
+freqs=xf_index(x_locate,80)[1]
 Xf=xf[x]
 #plot
 fig,ax=plt.subplots()
-line=ax.plot(freqs,Xf)
+line=ax.plot(freqs,Xf,label='x1')
 #plt.xlim((0,50))
 #print "max:",str(max(Xf))         
 ax.set_xlabel('Thz')
 ax.set_ylabel('')
 ###
-x=xf_index(14000,80)[0]
-freqs2=xf_index(14000,80)[1] 
-Xf2=xf2[x]
-line2=ax.plot(freqs2,Xf2,'g')
+x=xf_index(x_locate+400,80)[0]
+freqs2=xf_index(x_locate+400,80)[1] 
+Xf2=xf[x]
+line2=ax.plot(freqs2,Xf2,'g',label='x2')
 ###
-#x=xf_index(15000,80)[0]
-#freqs3=xf_index(15000,80)[1]
-#Xf3=xf3[x]
-#line3=ax.plot(freqs3,Xf3,'g')
+x=xf_index(x_locate+800,80)[0]
+freqs3=xf_index(x_locate+800,80)[1]
+Xf3=xf[x]
+line3=ax.plot(freqs3,Xf3,'g',label='x3')
+ax.legend(loc='best')
+ax.xaxis.set_minor_locator( MultipleLocator(1) )
 plt.xlim((0,50))
 #print and save
 fig.savefig(savedir,dpi=200)
