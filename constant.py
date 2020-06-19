@@ -2,8 +2,8 @@
 import os
 #constant
 nperseg = 256
-name    = 'a2_n4.5'
-data_name= "a2_n4.5/"
+name    = 'a2_n3'
+data_name= "a2_n3/"
 filenumber=4
 sdfdir  =  "../Data/"+data_name
 txtdir =  "txt/"+data_name
@@ -22,7 +22,7 @@ gridnumber = 2400
 Ny      =  2000
 Nx      =  gridnumber
 start   =  1
-stop    =  3710
+stop    =  2120
 step    =  1
 dt_snapshot= 10e-15
 dt      =  dt_snapshot*1e15      #fs

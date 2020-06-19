@@ -8,9 +8,9 @@ import function as func
 import scipy.fftpack as fftpack
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
-limit_min=1e12
-limit_max=4e12
-locate=7039e-6
+limit_min=0.1e12
+limit_max=10e12
+locate=1800e-6
 def draw(x):
         #p "draw",x
         savefigdir=const.figdir+str(x)+'k_bz.png'
