@@ -45,14 +45,21 @@ def draw(x):
         E_Thz=np.sum(np.sum(np.square(bz_filter.real)))
         eff=E_Thz/E_x
         print("efficiency",E_x,E_Thz,eff)
-        fig,axs=plt.subplots(2,2)
+        ne=data['Derived/Number_Density/electron1'].data
+	ne_y0=ne[...,int(const.Ny/2)]
+	ne=ne.T	
+	fig,axs=plt.subplots(2,2)
         im=axs[0][0].pcolormesh(bz,cmap=plt.get_cmap('bwr'))   
-        im2=axs[1][0].pcolormesh(abs(k_bz),cmap=plt.get_cmap('bwr'))
+	im2=axs[1][0].pcolormesh(ne)
+        #im2=axs[1][0].pcolormesh(abs(k_bz),cmap=plt.get_cmap('bwr'))
+	
         im3=axs[0][1].pcolormesh(bz_filter.real,cmap=plt.get_cmap('bwr'))
-        im4=axs[1][1].pcolormesh(abs(k_bz2),cmap=plt.get_cmap('bwr'))
+	im4=axs[1][1].plot(ne_y0)
+        #im4=axs[1][1].pcolormesh(abs(k_bz2),cmap=plt.get_cmap('bwr'))
+	fig.colorbar(im,ax=axs[0][0])
         fig.savefig(savefigdir,dpi=200)
 	plt.clf()
         plt.close('all')
-middle = (7594e-6/3e8 + const.window_start_time)/const.dt_snapshot
+middle = (3595e-6/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 draw(middle)

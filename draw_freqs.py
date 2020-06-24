@@ -108,5 +108,5 @@ ax.yaxis.set_major_formatter( FuncFormatter( freqs_formatter ) )
 ax.set_xlabel('um')
 ax.set_ylabel('Thz')
 #print and save
-plt.show()
+#plt.show()
 fig.savefig(savedir,dpi=200)

@@ -6,8 +6,8 @@ import constant as const
 import matplotlib.pyplot as pl
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
-locate='contrast862.0'
-x_locate=862
+x_locate=2200
+locate='contrast' + str(x_locate)
 xf=np.loadtxt(const.txtdir + 'xf.txt')
 
 #xf=np.loadtxt('txt/density1e-2/xf.txt')

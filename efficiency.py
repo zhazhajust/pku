@@ -10,7 +10,8 @@ from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
 limit_min=0.1e12
 limit_max=10e12
-locate=1800e-6
+locate=4000e-6
+locate2=6000e-6
 def draw(x):
         #p "draw",x
         savefigdir=const.figdir+str(x)+'k_bz.png'
@@ -36,7 +37,7 @@ def draw(x):
 		ma = 3e8/limit_max
 		if 2 * 3.14 / ma  > n * delta_k and  n * delta_k > 2 * 3.14 / mi:
 			k_n.append(n)
-	print("n",k_n[0],k_n[-1])
+	#print("n",k_n[0],k_n[-1])
 	k_bz2[...,0:k_n[0]]=0    #k_bz.argmin()
 	k_bz2[...,k_n[-1]:-k_n[-1]]=0  #k_bz.argmin()
 	k_bz2[...,-k_n[0]:]=0    #k_bz.argmin()
@@ -47,7 +48,8 @@ def draw(x):
 	E_x=np.sum(np.sum(np.square(bz)))
 	E_Thz=np.sum(np.sum(np.square(bz_filter.real)))
 	eff=E_Thz/E_x
-	print("efficiency",E_x,E_Thz,eff)
+	#print("efficiency",E_x,E_Thz,eff)
+
 	#fig,axs=plt.subplots(2,2)
         #im=axs[0][0].pcolormesh(bz,cmap=plt.get_cmap('bwr'))	
 	#im2=axs[1][0].pcolormesh(abs(k_bz),cmap=plt.get_cmap('bwr'))
@@ -59,14 +61,18 @@ def draw(x):
 print const.window_start_time
 middle = (locate/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
+a1 = (locate/3e8 + const.window_start_time)/const.dt_snapshot
+a2 = ((locate2-800e-6)/3e8 + const.window_start_time)/const.dt_snapshot
 d_n = 800e-6/3e8/const.dt_snapshot
 d_n = int(d_n)
-print 'middle',middle
-print "d_n",d_n
+#print 'middle',middle
+#print "d_n",d_n
 final_energe = 0
 index_n = 0
-for i in range(middle - int(d_n),middle + d_n/8,1):
-	print "i",i
+#for i in range(middle - int(d_n),middle + d_n/8,1):
+print 'a1,a2',a1,a2
+for i in range(int(a1),int(a2)):
+	#print "i",i
 	eff=draw(i)
 	if eff[1] >= final_energe:
 		final_energe=eff[1]
@@ -78,6 +84,7 @@ b = const.x_max/3e8/const.dt_snapshot/2
 b = int(b)
 print 'b',b
 start=draw(b)
+print 'sdf1,sdf2',a1,a2
 print 'Thz',limit_min,limit_max
 print 'index_n',index_n
 print 'index_x',3e8 * (index_n * const.dt_snapshot - const.window_start_time) * 1e6

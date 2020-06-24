@@ -13,7 +13,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 plt.switch_backend('agg')
 ###
 ####
-interval=100
+interval=50
 image_list=[]
 png_savedir = "./gif/png/"
 
@@ -91,7 +91,7 @@ for i in range(1,const.stop,interval):
 
 
 
-def create_gif(image_list, gif_name, duration = 1):
+def create_gif(image_list, gif_name, duration = 0.5):
     '''
     '''
     frames = []
