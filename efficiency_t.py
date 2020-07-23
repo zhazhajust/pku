@@ -13,7 +13,6 @@ limit_min=0.1e12
 limit_max=10e12
 locate=1800e-6
 locate2=3200e-6
-savefigdir=const.figdir+'Thz_'+'efficiency.png'
 def draw(x):
 	#p "draw",x
 	savefigdir=const.figdir+str(x)+'k_bz.png'
@@ -61,26 +60,45 @@ def draw(x):
 	#plt.close('all')
 	return [E_x,E_Thz]
 print(const.window_start_time)
+middle = (locate/3e8 + const.window_start_time)/const.dt_snapshot
+middle = int(middle)
 a1 = (locate/3e8 + const.window_start_time)/const.dt_snapshot
 a2 = ((locate2-800e-6)/3e8 + const.window_start_time)/const.dt_snapshot
-
+d_n = 800e-6/3e8/const.dt_snapshot
+d_n = int(d_n)
+#print 'middle',middle
+#print "d_n",d_n
+final_energe = []
+index_n = 0
+max_energe = 0
+#for i in range(middle - int(d_n),middle + d_n/8,1):
+'''
+for i in range(int(a1),int(a2)):
+	print "i",i
+	eff=draw(i)
+	print eff
+	final_energe.append(eff[1])
+	if eff[1] >= max_energe:
+                max_energe=eff[1]
+                index_n = i
+                #print 'eff,i',final_energe,i
+'''
 pool = multiprocessing.Pool(processes=4)
+#for i in range(start,stop+step,step):
+#       results.append(pool.apply_async(extract, (i, ))) 
 final_energe = pool.map(draw,range(int(a1),int(a2)))
+#print('max_energe:'+final_energe.max())
+#final=draw(a)
 b = const.x_max/3e8/const.dt_snapshot/2
 b = int(b)
 print('b',b)
 start=draw(b)
 print('sdf1,sdf2',a1,a2)
 print('Thz',limit_min,limit_max)
+print('index_n',index_n)
+print('index_x',3e8 * (index_n * const.dt_snapshot - const.window_start_time) * 1e6)
+#print('efficiency',max_energe/start[0])
 efficiency=np.array(final_energe/start[0])[...,1]
-max_index = a1+efficiency.argmax()
-max_distance = 3e8 * (max_index * const.dt_snapshot - const.window_start_time) * 1e6
-print('max_index',str(max_index))
-print('distance:'+str(max_distance))
-print('eff:'+str(efficiency.max()))
+
+print('max_efficiency',efficiency.max())
 np.savetxt(const.txtdir + 'eff.txt',efficiency)
-time = np.arange(int(a1),int(a2))
-locate = (time*const.dt_snapshot - const.window_start_time)*3e8*1e6
-np.savetxt(const.txtdir + 'eff_locate.txt',locate)
-plt.plot(locate,efficiency)
-plt.savefig(savefigdir,dpi=200)

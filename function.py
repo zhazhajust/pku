@@ -83,12 +83,12 @@ def ref_a(a):
 	p_y0=scalar_p(Ex_y0)
 	for b in range(0,x):
 		c=ref_index(b,Ex_y0,Ey_y0,zxx,ne_y0,k_x)
-		print("c",c)
+		#print("c",c)
 		a= type(c) == numpy.ndarray
-		print("type",a)
+		#print("type",a)
 		if type(c) == numpy.ndarray:
 			c=c[-1]
-		print("c[-1]",c)
+		#print("c[-1]",c)
 		ref.append(c)
 	#print("ref:",type(ref[0]))
 	return ref

@@ -10,14 +10,14 @@ plt.switch_backend('agg')
 #name="contrast/density_half"
 xf=np.loadtxt(const.txtdir+"xf.txt")
 ###
-locate  =  2000        #micron
+locate  =  22930        #micron
 
 savedir = const.figdir  +  "freqs"+str(locate)+".png"
 #constant
 c       =  3e8
 micron  =  1e-6
 lamada  =  const.lamada   #10.6 * micron
-gridnumber = 1500
+gridnumber = 2400
 stop    =  const.stop
 dt_snapshot= const.dt_snapshot       #3e-15
 dt      =  dt_snapshot*1e15      #fs
@@ -32,7 +32,7 @@ t_total=1e15*x_end/c         #fs
 t_size=t_total/(dt_snapshot*1e15)+1+1           #t_grid_number
 ######t_size=int(1e15*gridnumber*delta_x/c)+1
 x       = int(locate/(delta_x*x_interval*1e6))
-print("x:"+str(x))
+print "x:"+str(x)
 #######
 if t_end-window_start_time<0:
       xgrid   =  int(gridnumber)
@@ -60,11 +60,9 @@ Xf=xf[x]
 #np.savetxt(str(name)+str(locate)+"_freqs.txt",Xf)
 fig,ax=plt.subplots()
 line=ax.plot(freqs,Xf)
-#plt.xlim((0,50))
-ax.set_xlim([0,10])
-ax.set_ylim([0,1e11])
+plt.xlim((0,10))
 ax.xaxis.set_minor_locator( MultipleLocator(1) )
-print("max:",str(max(Xf)))  
+print "max:",str(max(Xf))         
 ax.set_xlabel('Thz')
 ax.set_ylabel('')
 

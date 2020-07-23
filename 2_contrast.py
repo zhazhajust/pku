@@ -6,7 +6,7 @@ import constant as const
 import matplotlib.pyplot as pl
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
-x_locate=2200
+x_locate=23000
 locate='contrast' + str(x_locate)
 xf=np.loadtxt(const.txtdir + 'xf.txt')
 
@@ -15,7 +15,7 @@ xf=np.loadtxt(const.txtdir + 'xf.txt')
 #xf3=np.loadtxt('txt/density1.2/xf.txt')
 
 savedir = const.figdir +locate +".png"
-def xf_index(x_locate,x_lenth):
+def xf_index(x_locate,x_lenth=80):
 ###
 	locate  =  x_locate        #micron
 	#savedir = "fig/density_100_half/freqs"+str(locate)+".png"
@@ -60,8 +60,8 @@ def xf_index(x_locate,x_lenth):
 #####set x ,y         
 
 ####transition Xf
-x=xf_index(x_locate,80)[0]
-freqs=xf_index(x_locate,80)[1]
+x=xf_index(x_locate)[0]
+freqs=xf_index(x_locate)[1]
 Xf=xf[x]
 #plot
 fig,ax=plt.subplots()
@@ -71,13 +71,13 @@ line=ax.plot(freqs,Xf,label='x1')
 ax.set_xlabel('Thz')
 ax.set_ylabel('')
 ###
-x=xf_index(x_locate+400,80)[0]
-freqs2=xf_index(x_locate+400,80)[1] 
+x=xf_index(x_locate+400)[0]
+freqs2=xf_index(x_locate+400)[1] 
 Xf2=xf[x]
 line2=ax.plot(freqs2,Xf2,'g',label='x2')
 ###
-x=xf_index(x_locate+800,80)[0]
-freqs3=xf_index(x_locate+800,80)[1]
+x=xf_index(x_locate+800)[0]
+freqs3=xf_index(x_locate+800)[1]
 Xf3=xf[x]
 line3=ax.plot(freqs3,Xf3,'g',label='x3')
 ax.legend(loc='best')

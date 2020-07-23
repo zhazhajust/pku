@@ -11,7 +11,7 @@ plt.switch_backend('agg')
 xf=np.loadtxt(const.txtdir+'xf.txt')
 #name = "/acceleration/"
 ###
-locate  =  3400        #micron
+locate  =  23000         #micron
 #constant
 c       =  3e8
 micron  =  1e-6

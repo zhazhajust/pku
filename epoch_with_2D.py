@@ -14,6 +14,7 @@ from matplotlib import colors, ticker, cm
 #from matplotlib.mlab import bivariate_normal
 #from scipy.interpolate import spline
 import constant as const
+import path
 from multiprocessing import shared_memory
 #from multiprocessing import Process, Array,Value
 #from multiprocessing.dummy import Pool as ThreadPool 
@@ -23,13 +24,58 @@ fftdir =const.figdir      #"./fig/a0_1_2e-2/"
 ###
 dirsdf  = const.sdfdir   # '../Data/a0_1_2e-2/'
 dirsize =  const.filenumber    #4
+def energe(x):
+        #p "draw",x
+        savefigdir=const.figdir+str(x)+'k_bz.png'
+        sdfdir=const.sdfdir +str(x).zfill(const.filenumber)+".sdf"
+        data=sdf.read(sdfdir,dict=True)
+        Bz=data['Electric Field/Ey']
+        time=data['Header']['time']
+        bz=Bz.data
+        bz=bz.T
+        k_bz=np.fft.fft(bz)
+        delta_k=3.14/const.delta_x/(const.Nx/2)
+        k_bz2=k_bz*1
+        k_n=[]
+        for n in range(0,const.Nx):
+                mi = 3e8/limit_min
+                ma = 3e8/limit_max
+                if 2 * 3.14 / ma  > n * delta_k and  n * delta_k > 2 * 3.14 / mi:
+                        k_n.append(n)
+        k_bz2[...,0:k_n[0]]=0    #k_bz.argmin()
+        k_bz2[...,k_n[-1]:-k_n[-1]]=0  #k_bz.argmin()
+        k_bz2[...,-k_n[0]:]=0    #k_bz.argmin()
+        bz_filter=np.fft.ifft(k_bz2)
+        E_x=np.sum(np.sum(np.square(bz)))
+        E_Thz=np.sum(np.sum(np.square(bz_filter.real)))
+        eff=E_Thz/E_x
+        return [E_x,E_Thz]
+def baktxt(n):
+        print("save file:"+str(n))
+        sdfdir=const.sdfdir +str(n).zfill(const.filenumber)+".sdf"
+        data = sdf.read(sdfdir,dict=True)
+        header=data['Header']
+        time=header['time']
+        Ex=data["Electric Field/Ex"].data
+        Ex_y0=Ex[...,int(const.Ny/2)]
+        Ey=data["Electric Field/Ey"].data
+        Ey_y0=Ey[...,int(const.Ny/2)]
+        ne=data['Derived/Number_Density/electron1'].data
+        ne_y0=ne[...,int(const.Ny/2)]
+        np.savetxt("baktxt/"+const.data_name+str(n)+"Ey_y0.txt",Ey_y0)
+        np.savetxt("baktxt/"+const.data_name+str(n)+"Ex_y0.txt",Ex_y0)
+        np.savetxt("baktxt/"+const.data_name+str(n)+"ne_y0.txt",ne_y0)
+
 def extract(n):
         #### header data ####
 	print('n:'+str(n))
 	#xt = np.frombuffer(global_arr_shared, np.double).reshape(SHAPE)
 	#global a.shape
 	#global a.dtype
-	xt = np.ndarray(ss1, dtype=ss2, buffer=shm.buf)
+
+
+	#xt = np.ndarray(ss1, dtype=ss2, buffer=shm.buf)
+
 	data = sdf.read(dirsdf+str(n).zfill(dirsize)+".sdf",dict=True)
 	header=data['Header']
 	time=header['time']
@@ -126,7 +172,8 @@ if __name__ == "__main__":
 	SHAPE = ((int(xgrid/x_interval)+1,t_size))
 	#xt = Array('f',SHAPE)
 	#global a
-	a=np.zeros((int(xgrid/x_interval)+1,t_size))
+	xt=np.zeros((int(xgrid/x_interval)+1,t_size))
+'''
 	shm = shared_memory.SharedMemory(create=True, size=a.nbytes)
 	#xt = np.ndarray(a.shape, dtype=a.dtype, buffer=shm.buf)
 	#xt[:,:]=a[:,:]
@@ -160,13 +207,32 @@ if __name__ == "__main__":
 
 	pool.close()
 	pool.join()
+'''
+	max_a0=[]
+	limit_min=0.1e12
+	limit_max=10e12
+	b = const.x_max/3e8/const.dt_snapshot/2
+	b = int(b)
+	print('b',b)
+	e_start=float("inf")
+	for n in range(start,stop+step,step):
+		while 1:
+			if os.path.exists(dirsdf+str(n).zfill(dirsize)+".sdf") == True:
+				break
+		extract(n)
+		baktxt(n)
 
-  #for n in range(start,stop+step,step):
+		max_a0.append(a0(n))
+		if n=b:
+			e_start=energe(b)[0]		
+		n_eff=energe(n)[1]/e_start
+		eff.append(n_eff)
+		if eff[n-1] > eff[n-2]and n>1:									
+		if n % 100 = 0:
+			index(eff.max())
+			
 	#extract(n)
 		#for res in results:
 			#print(res.get())
 	#arr = np.array(xt)
-	xt = np.ndarray(a.shape, dtype=a.dtype, buffer=shm.buf)
 	np.savetxt(savedir+savename, xt)
-	shm.close()
-	shm.unlink()

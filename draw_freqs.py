@@ -39,7 +39,7 @@ N0 = t_size
 T=t_size*dt             #fs  #dt_snapshot*1e15  #t[x][t_size-1]-t[x][0]
 fs=N0*1e3/T
 freqs=np.linspace(0,fs/2,int(N0/2)+1)
-print len(freqs)
+print(len(freqs))
 ######
 for i in range(0,len(freqs)):
      if freqs[i] > 50:
@@ -57,9 +57,9 @@ t=np.arange(0,t_size+dt,dt)
 
 
 #####set x ,y         
-print xgrid*delta_x*1e6/x_interval,delta_x*1e6
+print(xgrid*delta_x*1e6/x_interval,delta_x*1e6)
 #x=np.arange(int(xgrid*delta_x*1e6/x_interval)+1,delta_x*1e6)
-x=np.linspace(0,xgrid*delta_x*1e6/x_interval,xgrid/x_interval+1)
+x=np.linspace(0,xgrid*delta_x*1e6/x_interval,int(xgrid/x_interval+1))
 
 #a=float("inf")
 #freqs[0]=a
@@ -96,7 +96,7 @@ x_minor_locator=int(xgrid/x_interval/50)
 #ax.set_yticks(y_tick_pos)
 ######
 #ax.set_yscale("symlog",basey=2)
-ax.set_ylim((0,50))
+#ax.set_ylim((0,50))
 #ax.xaxis.set_major_locator( MultipleLocator(x_major_locator) )
 #ax.xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
 #ax.xaxis.set_minor_locator( MultipleLocator(x_minor_locator) )

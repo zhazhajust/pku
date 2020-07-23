@@ -49,7 +49,7 @@ t=np.arange(1,t_size,1)
 
 #####set x ,t        
 #x=np.arange(int(xgrid/x_interval)+1)
-x=np.linspace(0,xgrid*delta_x*1e6/x_interval,xgrid/x_interval+1)
+x=np.linspace(0,xgrid*delta_x*1e6/x_interval,int(xgrid/x_interval+1))
 X,time=np.meshgrid(x,t)
 
 
@@ -57,7 +57,7 @@ X,time=np.meshgrid(x,t)
 Xt=xt.T
 #plot
 fig,ax=plt.subplots()
-im=ax.pcolormesh(X,time,Xt,cmap=plt.get_cmap('rainbow'))
+im=ax.pcolormesh(X,time,Xt,cmap=plt.get_cmap('bwr'))
 fig.colorbar(im,ax=ax)
 #fig.savefig('Xf.png',dpi=200)
 #set ticker

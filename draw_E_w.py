@@ -21,8 +21,8 @@ def x_formatter(x, pos):
         a=(const.delta_x*x + const.c*T)   *1e6 
         return  "%d"%int(a)
 def x_formatter2(x, pos):
-	locate = x * const.nperseg
-        a=(const.delta_x * locate + const.c*T) * 1e6
+	#locate = x * const.nperseg
+        a=x + const.c*T * 1e6
         return  "%d"%int(a)
 def draw(x):
 	#print "draw",x
@@ -44,9 +44,10 @@ def draw(x):
 	index=int(const.Ny/2)
 	bz_y0=bz[index]
 	k0=2*3.14/const.lamada
+	k1=2*3.14/1e-6
 	fs=2*3.14/const.delta_x/k0
-	f,t,zxx=signal.stft(bz_y0,fs=2*3.14/const.delta_x/k0,nperseg=const.nperseg)
-
+	f,t,zxx=signal.stft(bz_y0,fs=2*3.14/const.delta_x,nperseg=const.nperseg)
+	print t,t.shape
 	ne=data['Derived/Number_Density/electron1'].data
 	ne_y0=ne[...,int(const.Ny/2)]
 	fig,axs=plt.subplots(2,2)
@@ -59,19 +60,20 @@ def draw(x):
 	#print ref
 	line2=axs[1][0].plot(ref)     
         #(density,cmap=plt.get_cmap('gray'))
-	im3=axs[0][1].pcolormesh(t,f,np.abs(zxx),cmap=plt.get_cmap('BuPu'),shading='gouraud')
+	im3=axs[0][1].pcolormesh(t*2*3.14/1e-6,f/k0,np.abs(zxx),cmap=plt.get_cmap('BuPu'),shading='gouraud')
 	#Xf_list=wigner.wigner(x)
 
 	#im3=axs[1][0].pcolormesh(Xf_list,cmap=plt.get_cmap('BuPu'),rasterized=True)
 	#im=axs[1][0].imshow(np.abs(zxx),extent=[],cmap=plt.get_cmap('BuPu'))
 	line3=axs[1][1].plot(ne_y0,'g')
 	ax2=axs[1][1].twinx()
+	#ax3=axs[0][1].twinx()
 	hx = fftpack.hilbert(bz_y0)
 	hy = np.sqrt(bz_y0**2+hx**2)
 	line4=ax2.plot(hy,'r')
-
-
-
+	#line5=axs[0][1].plot(ref)
+	#ax3.set_ylim((0.9,1,1))
+	
 	axs[1][0].set_ylim((0.6,1.2))
 	axs[1][0].set_ylabel('refractive_index')
 	axs[0][1].set_ylim((0,2))
@@ -82,9 +84,10 @@ def draw(x):
 	axs[0][0].set_title("t="+str(time),fontsize=12,color='r')
 
 	axs[0][0].xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
-	#axs[0][1].xaxis.set_major_formatter( FuncFormatter( x_formatter2 ) )
+	axs[0][1].xaxis.set_major_formatter( FuncFormatter( x_formatter2 ) )
 	axs[1][0].xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
 	axs[1][1].xaxis.set_major_formatter( FuncFormatter( x_formatter ) )
+	axs[1][1].xaxis.set_minor_locator( MultipleLocator(100) )
 ###
 	fig.savefig(png_savedir+str(x)+"ref_k.png",dpi=200)
 	image_list.append(png_savedir+str(x)+"ref_k.png")

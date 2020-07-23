@@ -10,8 +10,8 @@ from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
 limit_min=0.1e12
 limit_max=10e12
-locate=1600e-6
-locate2=3200e-6
+locate=12500e-6
+locate2=16000e-6
 middle = (locate/3e8 + const.window_start_time)/const.dt_snapshot
 middle = int(middle)
 d_n = 800e-6/3e8/const.dt_snapshot

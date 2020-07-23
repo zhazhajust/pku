@@ -8,7 +8,7 @@ from scipy.interpolate import interp1d
 import constant as const
 plt.switch_backend('agg')
 
-xf=np.loadtxt(const.txtdir+'xf.txt')
+#xf=np.loadtxt(const.txtdir+'xf.txt')
 #name = "/acceleration/"
 ###
 locate  =  3400        #micron
@@ -37,31 +37,28 @@ if t_end-window_start_time<0:
 else:
       xgrid   =  int(gridnumber + c*(t_end-window_start_time)/delta_x)
 #####fft freqs
+eff = np.loadtxt(const.txtdir + 'eff.txt')
+#time = np.arange(3116,3349)
+locate = np.loadtxt(const.txtdir + 'eff_locate.txt')
 
-density = [0.7e-3,1e-2,1.5e-2,3e-2,4.5e-2]
-efficiency = [0.08430194713819499,0.07445371403900371,0.06244937671843419,0.0666944355303626,0.05473469758420129]
-distance = [13384.0,8827.0,5043.4,1804.0,862.0]
+#locate = (time*const.dt_snapshot - const.window_start_time)*3e8*1e6
+
+#locate = int(locate)
 #THz=[]
-fig,axs =plt.subplots(2,1)
-line=axs[0].plot(density,efficiency,"g",label='eff')
-s3=axs[0].scatter(density,efficiency)
+fig,axs =plt.subplots()
+line=axs.plot(locate,eff,label='eff')
 #ax2=ax.twinx()
-axs[0].set_ylim([0,0.12])
-line2=axs[1].plot(density,distance,'r',label='distance')
-s4=axs[1].scatter(density,distance)
-#ax3=ax.twinx()
-#line3=axs[1][1].plot(density,Thz,'b',label='Thz')
 #line2=ax.scatter(lam,x_f)
 #ax.legend(loc='best')
 #ax2.legend(loc='best')
 #ax3.legend(loc='best')         
 #axs[0].set_xlabel('density')
-axs[1].set_xlabel('density')
-axs[0].set_ylabel('efficiency')
-axs[1].set_ylabel('distance')
+axs.set_ylabel('efficiency')
+axs.set_xlabel('um')
+axs.set_ylim([0,0.2])
 #ax.set_ylabel('')
 #plt.xlim((0,200))
 
 #print and save
-print const.figdir +  const.name +"_3line.png"
-fig.savefig(const.figdir +  const.name +"_3line.png",dpi=400)
+print(str(const.figdir +  const.name) +"_eff.png")
+fig.savefig(const.figdir +  const.name +"_eff.png",dpi=400)
