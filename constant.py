@@ -2,9 +2,9 @@
 import os
 #constant
 nperseg = 256
-name    = 'a2_n3'
-data_name = "a2_n3/"
-filenumber = 4
+name    = 'a2_n0.3'
+data_name = "a2_n0.3/"
+filenumber = 5
 sdfdir  =  "../Data/"+data_name
 txtdir  =  "txt/"+data_name
 figdir  =  "fig/"+data_name
@@ -18,18 +18,18 @@ checkdir()
 c       =  3e8
 micron  =  1e-6
 lamada  =  10.6 * micron 
-gridnumber = 2400
-Ny      =  2000
+gridnumber = 1800
+Ny      =  420
 Nx      =  gridnumber
-start   =  7000
-stop    =  10000
+start   =  1
+stop    =  15000
 step    =  1
 dt_snapshot= 10e-15
 dt      =  dt_snapshot*1e15      #fs
-x_max   =  80 * lamada#* micron   #60 * lamada #micron
+x_max   =  60 * lamada#* micron   #60 * lamada #micron
 x_min   =  0  * lamada#* micron
 x_end   =  x_max - x_min 
-y_lenth =  100 * lamada
+y_lenth =  70 * lamada
 window_start_time =  (x_max - x_min) / c
 delta_x =  x_end/gridnumber
 t_end   =  stop * dt_snapshot

@@ -6,7 +6,18 @@ import constant as const
 import matplotlib.pyplot as pl
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 plt.switch_backend('agg')
+###   
+time =  np.loadtxt(const.txtdir + 'a0.txt').argmax()   #sdf_locate
+locate = (time*const.dt_snapshot - const.window_start_time)*3e8*1e6
+### 
+time = np.loadtxt(const.txtdir + 'eff_Thz.txt').argmax()
+locate2 = (time*const.dt_snapshot - const.window_start_time)*3e8*1e6
+### 
+### um  ########
 x_locate=23000
+
+########
+###
 locate='contrast' + str(x_locate)
 xf=np.loadtxt(const.txtdir + 'xf.txt')
 

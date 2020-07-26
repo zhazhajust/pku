@@ -37,8 +37,8 @@ if t_end-window_start_time<0:
 else:
       xgrid   =  int(gridnumber + c*(t_end-window_start_time)/delta_x)
 #####fft freqs
-eff = np.loadtxt(const.txtdir + 'eff.txt')
-
+#eff = np.loadtxt(const.txtdir + 'eff.txt')
+a0_3 = np.loadtxt(const.txtdir+'3.5Thz_a0.txt')
 time = np.arange(const.start,const.stop+const.step,const.step)
 
 #locate = np.loadtxt(const.txtdir + 'eff_locate.txt')
@@ -48,17 +48,17 @@ locate = (time*const.dt_snapshot - const.window_start_time)*3e8*1e6
 #locate = int(locate)
 #THz=[]
 fig,axs =plt.subplots()
-line=axs.plot(locate,eff,label='eff')
+line=axs.plot(locate,a0_3,label='a0_3')
 #ax2=ax.twinx()
 #line2=ax.scatter(lam,x_f)
 #ax.legend(loc='best')
 #ax2.legend(loc='best')
 #ax3.legend(loc='best')         
 #axs[0].set_xlabel('density')
-time2 = eff.argmax()+1
+time2 = a0_3.argmax()+1
 locate2 = (time2*const.dt_snapshot - const.window_start_time)*3e8*1e6
-axs.set_title('eff.argmax():'+'    '+str(time2)+'   '+str(locate2)+'    '+str(eff.max()),color='r')
-axs.set_ylabel('efficiency')
+axs.set_title('3_a0.argmax():'+'    '+str(time2)+'   '+str(locate2)+'    '+str(a0_3.max()),color='r')
+axs.set_ylabel('3_a0')
 axs.set_xlabel('um')
 
 #axs.set_ylim([0,0.2])
@@ -66,6 +66,6 @@ axs.set_xlabel('um')
 #plt.xlim((0,200))
 
 #print and save
-print(str(const.figdir +  const.name) +"_eff.png")
-print(eff.max())
-fig.savefig(const.figdir +  const.name +"_eff.png",dpi=400)
+print(str(const.figdir +  const.name) +"_3_a0.png")
+print(a0_3.max())
+fig.savefig(const.figdir +  const.name +"_3_a0.png",dpi=400)

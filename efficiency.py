@@ -16,8 +16,12 @@ locate2=3200e-6
 savefigdir=const.figdir+'Thz_'+'efficiency.png'
 def draw(x):
 	#p "draw",x
+
 	savefigdir=const.figdir+str(x)+'k_bz.png'
 	sdfdir=const.sdfdir +str(x).zfill(const.filenumber)+".sdf"
+	if os.path.exists(sdfdir)==False:
+                return [0,0]
+
 	data=sdf.read(sdfdir,dict=True)
 	Bz=data['Electric Field/Ey']
 	time=data['Header']['time']

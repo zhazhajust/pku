@@ -13,13 +13,15 @@ limit_min=0.1e12
 limit_max=10e12
 #locate=1800e-6
 #locate2=3200e-6
-i1=816
-i2=1083
+i1=const.start
+i2=const.stop+const.step
 savefigdir=const.figdir+'Thz_'+'efficiency.png'
 def draw(x):
 	#p "draw",x
 	savefigdir=const.figdir+str(x)+'k_bz.png'
 	sdfdir=const.sdfdir +str(x).zfill(const.filenumber)+".sdf"
+	if os.path.exists(sdfdir)==False:
+		return[0,0]
 	data=sdf.read(sdfdir,dict=True)
 	Bz=data['Electric Field/Ey']
 	time=data['Header']['time']
@@ -78,6 +80,7 @@ pool = multiprocessing.Pool(processes=4)
 #for i in range(start,stop+step,step):
 #       results.append(pool.apply_async(extract, (i, ))) 
 final_energe = pool.map(draw,range(int(i1),int(i2)))
+#print(final_energe)
 #print('max_energe:'+final_energe.max())
 #final=draw(a)
 b = const.x_max/3e8/const.dt_snapshot/2
@@ -88,7 +91,7 @@ print('sdf1,sdf2',i1,i2)
 print('Thz',limit_min,limit_max)
 #print(final_energe)
 #print('efficiency',max_energe/start[0])
-efficiency=np.array(final_energe/start[0])[...,1]
+efficiency=np.array(np.array(final_energe)/start[0])[...,1]
 max_index = i1+efficiency.argmax() 
 max_distance = 3e8 * (max_index * const.dt_snapshot - const.window_start_time) * 1e6
 #print(efficiency)
